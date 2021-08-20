@@ -23,10 +23,11 @@ class LoginFragment : Fragment() {
             val name = binding.etUsername.text.toString()
             val password = binding.etPassword.text.toString()
 
-            if (name.isNotEmpty() && password.isNotEmpty()) {
+            if (inputCheck(name, password)) {
                 val action =
                     LoginFragmentDirections.actionLoginFragmentToWelcomeFragment(name, password)
                 Navigation.findNavController(it).navigate(action)
+                makeToast("Logged in successfully")
             } else {
                 binding.apply {
                     etUsername.error = "Field cannot be empty"
@@ -34,10 +35,19 @@ class LoginFragment : Fragment() {
 
                     etPassword.error = "Field cannot be empty"
                     etUsername.requestFocus()
+                    makeToast("Please fill out all fields")
                 }
             }
         }
 
         return binding.root
+    }
+
+    private fun makeToast(message: String) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun inputCheck(name: String, password: String): Boolean {
+        return name.isNotEmpty() && password.isNotEmpty()
     }
 }
